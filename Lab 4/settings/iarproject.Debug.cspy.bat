@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"D:\Games\IAR\common\bin\cspybat" -f "C:\IAR Proj\HSE\settings\iarproject.Debug.general.xcl" --backend -f "C:\IAR Proj\HSE\settings\iarproject.Debug.driver.xcl" 
+"D:\Games\IAR\common\bin\cspybat" -f "C:\IAR Proj\Lab 4\settings\iarproject.Debug.general.xcl" --backend -f "C:\IAR Proj\Lab 4\settings\iarproject.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"D:\Games\IAR\common\bin\cspybat" -f "C:\IAR Proj\HSE\settings\iarproject.Debug.general.xcl" "--debug_file=%~1" --backend -f "C:\IAR Proj\HSE\settings\iarproject.Debug.driver.xcl" 
+"D:\Games\IAR\common\bin\cspybat" -f "C:\IAR Proj\Lab 4\settings\iarproject.Debug.general.xcl" "--debug_file=%~1" --backend -f "C:\IAR Proj\Lab 4\settings\iarproject.Debug.driver.xcl" 
 
 @echo off 
 :end

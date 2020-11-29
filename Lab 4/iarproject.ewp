@@ -2321,6 +2321,9 @@
     <group>
         <name>Common</name>
         <file>
+            <name>$PROJ_DIR$\Common\susudefs.hpp</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\Common\utils.hpp</name>
         </file>
     </group>

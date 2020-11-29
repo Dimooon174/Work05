@@ -16,11 +16,11 @@
         <ShowSource>1</ShowSource>
     </Trace1>
     <DebugChecksum>
-        <Checksum>4249346869</Checksum>
+        <Checksum>1127391884</Checksum>
     </DebugChecksum>
     <Disassembly>
-        <MixedMode>1</MixedMode>
         <InstrCount>0</InstrCount>
+        <MixedMode>1</MixedMode>
     </Disassembly>
     <CodeCoverage>
         <Enabled>0</Enabled>
@@ -150,7 +150,7 @@
         <Count>1</Count>
     </Breakpoints2>
     <Aliases>
-        <A0>_ "C:\Users\Константин\Desktop\Lab2\startupF411RE.cpp" "C:\AMD\Lab2\startupF411RE.cpp"</A0>
+        <A0>_ "C:\Users\User\Desktop\stm32Labs-master\Lab2\startupF411RE.cpp" ""</A0>
         <Count>1</Count>
         <SuppressDialog>0</SuppressDialog>
     </Aliases>

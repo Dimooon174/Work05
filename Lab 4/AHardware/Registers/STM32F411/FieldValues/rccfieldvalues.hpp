@@ -15,7 +15,7 @@
 template <typename Reg, size_t offset, size_t size, typename AccessMode, typename BaseType> 
 struct RCC_CR_PLLI2SRDY_Values: public RegisterField<Reg, offset, size, AccessMode> 
 {
-  using Unclocked = FieldValue<RCC_CR_PLLI2SRDY_Values, BaseType, 0U> ;
+  using Unlocked = FieldValue<RCC_CR_PLLI2SRDY_Values, BaseType, 0U> ;
   using Locked = FieldValue<RCC_CR_PLLI2SRDY_Values, BaseType, 1U> ;
 } ;
 
@@ -29,7 +29,7 @@ struct RCC_CR_PLLI2SON_Values: public RegisterField<Reg, offset, size, AccessMod
 template <typename Reg, size_t offset, size_t size, typename AccessMode, typename BaseType> 
 struct RCC_CR_PLLRDY_Values: public RegisterField<Reg, offset, size, AccessMode> 
 {
-  using Unclocked = FieldValue<RCC_CR_PLLRDY_Values, BaseType, 0U> ;
+  using Unlocked = FieldValue<RCC_CR_PLLRDY_Values, BaseType, 0U> ;
   using Locked = FieldValue<RCC_CR_PLLRDY_Values, BaseType, 1U> ;
 } ;
 

@@ -23,9 +23,9 @@
 
 if ($debugfile -eq "")
 {
-& "D:\Games\IAR\common\bin\cspybat" -f "C:\IAR Proj\HSE\settings\iarproject.Debug.general.xcl" --backend -f "C:\IAR Proj\HSE\settings\iarproject.Debug.driver.xcl" 
+& "D:\Games\IAR\common\bin\cspybat" -f "C:\IAR Proj\Lab 4\settings\iarproject.Debug.general.xcl" --backend -f "C:\IAR Proj\Lab 4\settings\iarproject.Debug.driver.xcl" 
 }
 else
 {
-& "D:\Games\IAR\common\bin\cspybat" -f "C:\IAR Proj\HSE\settings\iarproject.Debug.general.xcl" --debug_file=$debugfile --backend -f "C:\IAR Proj\HSE\settings\iarproject.Debug.driver.xcl" 
+& "D:\Games\IAR\common\bin\cspybat" -f "C:\IAR Proj\Lab 4\settings\iarproject.Debug.general.xcl" --debug_file=$debugfile --backend -f "C:\IAR Proj\Lab 4\settings\iarproject.Debug.driver.xcl" 
 }
