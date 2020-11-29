@@ -12,93 +12,104 @@
 
 [source, cpp]
 ----
+
 #include "rccregisters.hpp"
 #include "gpiocregisters.hpp"
 #include "gpioaregisters.hpp"
 #include <iostream>
 #include "stkregisters.hpp"
-#include "tim2registers.hpp"
 
 constexpr std::uint32_t CpuClock = 8'000'000U;
-auto delay_ms(std::uint32_t ButPeriod)
+
+
+auto delay_ms(std::uint32_t period)
 {
-TIM2::CR1::URS::OverflowEvent::Set();
-TIM2::PSC::Set(7999U);
-TIM2::ARR::Write(ButPeriod - 1U);
-TIM2::SR::UIF::NoInterruptPending::Set();
-TIM2::CNT::Write(0);
-TIM2::CR1::CEN::Enable::Set();
-while (!TIM2::SR::UIF::NoInterruptPending::IsSet() )
-      {
 
-      }
-      TIM2::CR1::CEN::Disable::Set();
-      }
+bool result = false;
+{
+const std::uint32_t timerValue = (CpuClock / 1000) * period - 1U;
+STK::LOAD::Write(timerValue);
+STK::VAL::Write(0U);
+STK::CTRL::ENABLE::Enable::Set();
+while(STK::CTRL::COUNTFLAG::NoOverflow::IsSet());
+{
+}
+STK::CTRL::ENABLE::Disable::Set();
 
- int main()
-    {
-      unsigned int ButPeriod = 100U;
-      unsigned int LedsPeriod = 500U;
-      unsigned int counter = 0;
+result = true;
+}
+return true;
+}
 
-    bool flag = false;
-    RCC::CR::HSEON::On::Set();
-    while(!RCC::CR::HSERDY::Ready::IsSet())
-    {
-    }
 
-        RCC::CFGR::SW::Hse::Set();
-    while(!RCC::CFGR::SWS::Hse::IsSet())
-    {
-    }
-        RCC::AHB1ENR::GPIOCEN::Enable::Set();
-        RCC::AHB1ENR::GPIOAEN::Enable::Set();
-        GPIOC::MODER::MODER5::Output::Set();
-        GPIOC::MODER::MODER13::Input::Set();
-        GPIOA::MODER::MODER5::Output::Set();
-        GPIOC::MODER::MODER9::Output::Set();
-        GPIOC::MODER::MODER8::Output::Set();
-        RCC::APB1ENR::TIM2EN::Enable::Set();
+int main()
+{
+unsigned int ButPeriod = 100U;
+unsigned int LedsPeriod = 500U;
+unsigned int counter = 0;
 
-    for(;;)
-    {
- delay_ms(ButPeriod);
-    if(GPIOC::IDR::IDR13::Low::IsSet())
-    {
-      LedsPeriod += 100U;
-      counter = 0;
-    }
-    counter = counter + ButPeriod;
-    if(counter >= LedsPeriod)
-      {
-        if(!flag)
-      {
-      GPIOC::BSRR::BS8::High::Write();
-      GPIOC::BSRR::BS9::High::Write();
-      GPIOC::BSRR::BS5::High::Write();
-      GPIOA::BSRR::BS5::High::Write();
-      flag = true;
-    }
-    else
-    {
-      GPIOC::BSRR::BR9::Low::Write();
-      GPIOC::BSRR::BR8::Low::Write();
-      GPIOC::BSRR::BR5::Low::Write();
-      GPIOA::BSRR::BR5::Low::Write();
-      flag = false;
-    }
-    counter = 0;
+bool flag = false;
+RCC::CR::HSEON::On::Set();
+while(!RCC::CR::HSERDY::Ready::IsSet())
+{
+}
 
-    }
-    }
-    return 1;
-    }
+RCC::CFGR::SW::Hse::Set();
+while(!RCC::CFGR::SWS::Hse::IsSet())
+{
+}
+
+STK::LOAD::Write(CpuClock - 1U);
+STK::CTRL::CLKSOURCE::CpuClock::Set();
+RCC::AHB1ENR::GPIOAEN::Enable::Set();
+RCC::AHB1ENR::GPIOCEN::Enable::Set();
+GPIOC::MODER::MODER5::Output::Set();
+GPIOC::MODER::MODER13::Input::Set();
+GPIOA::MODER::MODER5::Output::Set();
+GPIOC::MODER::MODER9::Output::Set();
+GPIOC::MODER::MODER8::Output::Set();
+
+for(;;)
+{
+
+
+delay_ms(ButPeriod);
+if(GPIOC::IDR::IDR13::Low::IsSet())
+{
+LedsPeriod += 100U;
+counter = 0;
+}
+counter = counter + ButPeriod;
+if(counter >= LedsPeriod)
+{
+if(!flag)
+{
+GPIOC::BSRR::BS8::High::Write();
+GPIOC::BSRR::BS9::High::Write();
+GPIOC::BSRR::BS5::High::Write();
+GPIOA::BSRR::BS5::High::Write();
+flag = true;
+}
+else
+{
+GPIOC::BSRR::BR9::Low::Write();
+GPIOC::BSRR::BR8::Low::Write();
+GPIOC::BSRR::BR5::Low::Write();
+GPIOA::BSRR::BR5::Low::Write();
+flag = false;
+}
+counter = 0;
+
+}
+}
+return 1;
+}
 
 ----
 
 Задание: _Настроить таймер TIM2 аналогично системному таймеру._
 
-Первым делом подаем тактирование на модуль таймера. Работаем от HSE, 8 МГц.
+Певым делом подаем тактирование на модуль таймера. Работаем от HSE, 8 МГц.
 Для того чтобы таймер работал, подключаем его к системе тактирования.
 
 ----
@@ -158,31 +169,28 @@ TIM2::CR1::CEN::Disable::Set();
 #include "gpiocregisters.hpp"
 #include "gpioaregisters.hpp"
 #include <iostream>
+#include "stkregisters.hpp"
 #include "tim2registers.hpp"
 
 constexpr std::uint32_t CpuClock = 8'000'000U;
 auto delay_ms(std::uint32_t ButPeriod)
 {
 TIM2::CR1::URS::OverflowEvent::Set();
-const std::uint32_t timerValue = (CpuClock * 1000U) * ButPeriod - 1U;
-TIM2::ARR::Write(timerValue);
+TIM2::PSC::Set(7999U);
+TIM2::ARR::Write(ButPeriod - 1U);
 TIM2::SR::UIF::NoInterruptPending::Set();
 TIM2::CNT::Write(0);
 TIM2::CR1::CEN::Enable::Set();
-
-  while (!TIM2::SR::UIF::NoInterruptPending::IsSet() )
+while (!TIM2::SR::UIF::NoInterruptPending::IsSet() )
       {
-
       }
       TIM2::CR1::CEN::Disable::Set();
       }
-
-    int main()
+ int main()
     {
       unsigned int ButPeriod = 100U;
       unsigned int LedsPeriod = 500U;
       unsigned int counter = 0;
-
     bool flag = false;
     RCC::CR::HSEON::On::Set();
     while(!RCC::CR::HSERDY::Ready::IsSet())
@@ -204,9 +212,7 @@ TIM2::CR1::CEN::Enable::Set();
 
     for(;;)
     {
-
-
-    delay_ms(ButPeriod);
+ delay_ms(ButPeriod);
     if(GPIOC::IDR::IDR13::Low::IsSet())
     {
       LedsPeriod += 100U;
@@ -232,7 +238,6 @@ TIM2::CR1::CEN::Enable::Set();
       flag = false;
     }
     counter = 0;
-
     }
     }
     return 1;
